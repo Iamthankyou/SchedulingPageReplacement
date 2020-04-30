@@ -1,8 +1,7 @@
 package com.duy;
 
-import com.duy.scheduling.RoundRobin;
-import com.duy.scheduling.SJFPreemptive;
-import com.duy.scheduling.Scheduling;
+import com.duy.pagereplacement.FIFO;
+import com.duy.pagereplacement.PageReplacement;
 
 public class Main {
 
@@ -13,12 +12,18 @@ public class Main {
 		
 //		Scheduling scheduling = new FCFS(processes,burstTime);
 //		Scheduling scheduling = new SJF(arrivalTime,burstTime);
-		Scheduling scheduling = new SJFPreemptive(arrivalTime,burstTime);
+//		Scheduling scheduling = new SJFPreemptive(arrivalTime,burstTime);
 //		Scheduling scheduling = new RoundRobin(arrivalTime,burstTime,4);
 		
-		scheduling.showGain();
-		scheduling.showWaitingTime();
-		scheduling.showAroundTime();
+//		scheduling.showGain();
+//		scheduling.showWaitingTime();
+//		scheduling.showAroundTime();
+		
+		int[] page = {1,2,3,4,1,2,5,1,2,3,4,5};
+		int frame = 4;
+		PageReplacement pageReplacement = new FIFO(page,frame);
+		
+		pageReplacement.showTable();
 	}
 
 }
