@@ -1,32 +1,40 @@
 package com.duy.scheduling;
 
 public class Process {
-	private int arrivalTime;
-	private int burstTime;
+	private double arrivalTime;
+	private double burstTime;
 	private int process;
-	private int waitTime;
-	private int aroundTime;
+	private double waitTime;
+	private double aroundTime;
 	
-	public Process(int arrivalTime, int burstTime, int process) {
+	public Process(double arrivalTime, double burstTime, int process) {
 		super();
 		this.arrivalTime = arrivalTime;
 		this.burstTime = burstTime;
 		this.process = process;
 	}
+	
+	public Process(Process x) {
+		arrivalTime = x.getArrivalTime();
+		burstTime = x.getBurstTime();
+		process = x.getProcess();
+		waitTime = x.getWaitTime();
+		aroundTime = x.getAroundTime();
+	}
 
-	public int getArrivalTime() {
+	public double getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public void setArrivalTime(int arrivalTime) {
+	public void setArrivalTime(double arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public int getBurstTime() {
+	public double getBurstTime() {
 		return burstTime;
 	}
 
-	public void setBurstTime(int burstTime) {
+	public void setBurstTime(double burstTime) {
 		this.burstTime = burstTime;
 	}
 
@@ -38,19 +46,19 @@ public class Process {
 		this.process = process;
 	}
 
-	public int getWaitTime() {
+	public double getWaitTime() {
 		return waitTime;
 	}
 
-	public void setWaitTime(int waitTime) {
+	public void setWaitTime(double waitTime) {
 		this.waitTime = waitTime;
 	}
 
-	public int getAroundTime() {
+	public double getAroundTime() {
 		return aroundTime;
 	}
 
-	public void setAroundTime(int aroundTime) {
+	public void setAroundTime(double aroundTime) {
 		this.aroundTime = aroundTime;
 	}
 

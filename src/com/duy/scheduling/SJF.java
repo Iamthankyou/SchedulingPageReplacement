@@ -9,7 +9,7 @@ public class SJF implements Scheduling {
 	private PriorityQueue <Process> processes;
 	private List<Process> res ;
 	
-	public SJF(int[] arrivalTime, int[] burstTime) {
+	public SJF(double[] arrivalTime, double[] burstTime) {
 		processes = new PriorityQueue<Process>(new ComparatorBurstTime());
 		res = new ArrayList<>();
 		
@@ -17,7 +17,7 @@ public class SJF implements Scheduling {
 			processes.add(new Process(arrivalTime[i],burstTime[i],i+1));
 		}
 		
-		int time = 0;
+		double time = 0;
 		for(Process i:processes) {
 			if (i.getArrivalTime()==0) {
 				time = i.getBurstTime();
@@ -48,8 +48,8 @@ public class SJF implements Scheduling {
 	public void showGain() {
 		System.out.println("Gaintt:");
 		String line1 = "";
-		String line2 = "0";
-		int sum=0;
+		String line2 = "0.0";
+		double sum=0;
 		for (Process i:res) {
 			String line = "";
 			for (int j=0; j<i.getBurstTime(); j++) {
@@ -62,12 +62,12 @@ public class SJF implements Scheduling {
 			String tmp = left + "P" + i.getProcess() + right;
 			
 			String space ="";
-			for (int j=0; j<Integer.toString(sum).length(); j++) {
+			for (int j=0; j<Double.toString(sum).length(); j++) {
 				space+=" ";
 			}
 			
 			sum+=i.getBurstTime();
-			line2+="-"+line+Integer.toString(sum);
+			line2+="-"+line+Double.toString(sum);
 			
 			line1+=space+tmp;
 		}
@@ -78,9 +78,9 @@ public class SJF implements Scheduling {
 	@Override
 	public void showWaitingTime() {
 		System.out.println("Wait time:");
-		int sum = 0;
+		double sum = 0;
 		for (Process i:res) {
-			System.out.print("P"+i.getProcess()+":"+i.getWaitTime()+".");
+			System.out.print("P"+i.getProcess()+":"+i.getWaitTime()+". ");
 			sum+=i.getWaitTime();
 		}
 		System.out.print("AVG:"+(double)sum/res.size());
@@ -90,9 +90,9 @@ public class SJF implements Scheduling {
 	@Override
 	public void showAroundTime() {
 		System.out.println("Save time:");
-		int sum=0;
+		double sum=0;
 		for (Process i:res) {
-			System.out.print("P"+i.getProcess()+":"+i.getAroundTime()+".");
+			System.out.print("P"+i.getProcess()+":"+i.getAroundTime()+". ");
 			sum+=i.getAroundTime();
 		}
 		System.out.print("AVG:"+(double)sum/res.size());
