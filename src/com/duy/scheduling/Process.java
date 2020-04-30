@@ -14,6 +14,11 @@ public class Process {
 		this.process = process;
 	}
 	
+	public Process(double burstTime, int process) {
+		this.burstTime = burstTime;
+		this.process = process;
+	}
+	
 	public Process(Process x) {
 		arrivalTime = x.getArrivalTime();
 		burstTime = x.getBurstTime();
