@@ -1,20 +1,25 @@
 package com.duy.pagereplacement;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.PriorityQueue;
 
-public class FIFO implements PageReplacement {
-	private HashMap<Integer, Integer> map;
-	private Queue<Tiny> queue;
+public class LRU implements PageReplacement {
+
+	private HashMap<Integer,Integer> map;
+	private LinkedHashMap<Integer,Integer> mapPage;
+	private PriorityQueue<Tiny> queue;
 	private String[][] table;
 	private int errors;
 	private String linePage;
-
-	public FIFO(int[] page, int frame) {
+	
+	public LRU(int[] page, int frame) {
 		map = new HashMap<>();
-		queue = new LinkedList<>();
+		mapPage = new LinkedHashMap<>();
+		queue = new PriorityQueue<>(new TinyComparation());
+		
 		table = new String[frame + 1][page.length + 1];
 		errors = 0;
 
@@ -29,28 +34,49 @@ public class FIFO implements PageReplacement {
 		}
 		table[frame][0] = "|Fault :";
 
-		process(page, frame);
+		process(page, frame);	
 	}
-
+	
 	private void process(int[] page, int frame) {
-		for (int i = 0; i < page.length; i++) {
-			if (queue.size() < frame) {
+		
+		for (int i=0; i<page.length; i++) {
+			if (queue.size()<frame) {
 				queue.add(new Tiny(page[i], queue.size()));
 				map.put(page[i], page[i]);
 				table[frame][i + 1] = "| x |";
 				errors++;
-			} else if (!map.containsKey(page[i])) {
-				Tiny tmp = queue.poll();
-				map.remove(tmp.getI());
-				map.put(page[i], page[i]);
-				queue.add(new Tiny(page[i], tmp.getPos()));
+			}
+			else if (!map.containsKey(page[i])) {
+				int max = Integer.MIN_VALUE;
+				Tiny tinyMax = null;
+				
+				for (Tiny iter:queue) {
+					for (int j=i-1; j>=0; j--) {
+						if (iter.getI()==page[j]) {
+							if (max < (i-j)) {
+								max = i-j;
+								tinyMax = iter;
+							}
+							break;
+						}
+					}
+					
+				}
+				
+				queue.remove(tinyMax);
+				queue.add(new Tiny(page[i],tinyMax.getPos()));
+				map.remove(tinyMax.getI());
+				map.put(page[i],page[i]);
+				
 				table[frame][i + 1] = "| x |";
 				errors++;
-			}
-
+				
+			} 
+			
 			for (Tiny iter : queue) {
 				table[iter.getPos()][i + 1] = "| " + Integer.toString(iter.getI()) + " |";
 			}
+			
 		}
 		
 		linePage = "| Page :";
@@ -58,10 +84,11 @@ public class FIFO implements PageReplacement {
 			linePage+="| "+page[i]+" |";
 		}
 	}
-
+	
 	@Override
 	public void showTable() {
-		System.out.println("FIFO Table replacement: ");
+	System.out.println("LRU Table replacement: ");
+		
 		
 		int numChar = 5*(table[0].length-1) + 8;
 		String line = "";
